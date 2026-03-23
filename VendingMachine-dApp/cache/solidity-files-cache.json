@@ -1,0 +1,42 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/wtc/Documents/ABC/VendingMachine-dApp/contracts/VendingMachine.sol": {
+      "lastModificationDate": 1774207042051,
+      "contentHash": "f06b8e53cf3e1d5c84bd1fd82e7649e9",
+      "sourceName": "contracts/VendingMachine.sol",
+      "solcConfig": {
+        "version": "0.8.22",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1000
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata",
+                "storageLayout"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.18"
+      ],
+      "artifacts": [
+        "VendingMachine"
+      ]
+    }
+  }
+}
