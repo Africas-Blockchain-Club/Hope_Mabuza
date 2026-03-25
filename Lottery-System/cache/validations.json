@@ -1,0 +1,1475 @@
+{
+  "version": "3.4",
+  "log": [
+    {
+      "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:ConfirmedOwner": {
+        "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:8",
+        "version": {
+          "withMetadata": "c8b3af2cec1c0f0421f1b0edd2be82208d85f8dc42861690c9537f90d0b48e51",
+          "withoutMetadata": "a5ab3e054f7bf9051cc18658ac105cafc6683f2c71a97229602aecaebe2521f2",
+          "linkedWithoutMetadata": "a5ab3e054f7bf9051cc18658ac105cafc6683f2c71a97229602aecaebe2521f2"
+        },
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:ConfirmedOwnerWithProposal",
+          "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ConfirmedOwner",
+            "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:9"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "s_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:9"
+            },
+            {
+              "label": "s_pendingOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:10"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:ConfirmedOwnerWithProposal": {
+        "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:8",
+        "version": {
+          "withMetadata": "feaad1a5cce8a360de42f8f262b16745ee1d85efa0f08f9139421bf0ee0f17be",
+          "withoutMetadata": "85b1c605db5bec90fc901c80c05ac614736b6fec2f6d0e4df2beb2febb02727e",
+          "linkedWithoutMetadata": "85b1c605db5bec90fc901c80c05ac614736b6fec2f6d0e4df2beb2febb02727e"
+        },
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "transferOwnership(address)",
+          "acceptOwnership()",
+          "owner()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ConfirmedOwnerWithProposal",
+            "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:15"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "s_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:9"
+            },
+            {
+              "label": "s_pendingOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:10"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable": {
+        "src": "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "transferOwnership(address)",
+          "acceptOwnership()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:VRFConsumerBaseV2Plus": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:102",
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:ConfirmedOwner",
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:ConfirmedOwnerWithProposal",
+          "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable",
+          "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFMigratableConsumerV2Plus.sol:IVRFMigratableConsumerV2Plus"
+        ],
+        "libraries": [],
+        "methods": [
+          "rawFulfillRandomWords(uint256,uint256[])",
+          "setCoordinator(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "VRFConsumerBaseV2Plus",
+            "src": "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:114"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "s_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:9"
+            },
+            {
+              "label": "s_pendingOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:10"
+            },
+            {
+              "label": "s_vrfCoordinator",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_contract(IVRFCoordinatorV2Plus)380",
+              "contract": "VRFConsumerBaseV2Plus",
+              "src": "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:109"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(IVRFCoordinatorV2Plus)380": {
+              "label": "contract IVRFCoordinatorV2Plus",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFCoordinatorV2Plus.sol:IVRFCoordinatorV2Plus": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFCoordinatorV2Plus.sol:9",
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFSubscriptionV2Plus.sol:IVRFSubscriptionV2Plus"
+        ],
+        "libraries": [],
+        "methods": [
+          "requestRandomWords((bytes32,uint256,uint16,uint32,uint32,bytes))"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFMigratableConsumerV2Plus.sol:IVRFMigratableConsumerV2Plus": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFMigratableConsumerV2Plus.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "setCoordinator(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFSubscriptionV2Plus.sol:IVRFSubscriptionV2Plus": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFSubscriptionV2Plus.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "addConsumer(uint256,address)",
+          "removeConsumer(uint256,address)",
+          "cancelSubscription(uint256,address)",
+          "acceptSubscriptionOwnerTransfer(uint256)",
+          "requestSubscriptionOwnerTransfer(uint256,address)",
+          "createSubscription()",
+          "getSubscription(uint256)",
+          "pendingRequestExists(uint256)",
+          "getActiveSubscriptionIds(uint256,uint256)",
+          "fundSubscriptionWithNative(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol:VRFV2PlusClient": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol:5",
+        "version": {
+          "withMetadata": "fad6baea4983a8ca3abb5c2e76fdd514840055908ef45644b32510a6e8b39dbe",
+          "withoutMetadata": "4bc47e6051b316d7b9387d6b47bf0003cc7fabe6bf9b8d8d1e4526812e43fff6",
+          "linkedWithoutMetadata": "4bc47e6051b316d7b9387d6b47bf0003cc7fabe6bf9b8d8d1e4526812e43fff6"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/Lottery.sol:LotteryRandomTest": {
+        "src": "contracts/Lottery.sol:8",
+        "version": {
+          "withMetadata": "9764e86ea6a0db5a609df290c772ada228d786c214106debf481be0932d24b3d",
+          "withoutMetadata": "43beafe6d2d65acb34ca015aa144642752cf7807ceff6bc5d544a57e11b46479",
+          "linkedWithoutMetadata": "43beafe6d2d65acb34ca015aa144642752cf7807ceff6bc5d544a57e11b46479"
+        },
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:VRFConsumerBaseV2Plus",
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:ConfirmedOwner",
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:ConfirmedOwnerWithProposal",
+          "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable",
+          "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFMigratableConsumerV2Plus.sol:IVRFMigratableConsumerV2Plus"
+        ],
+        "libraries": [
+          "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol:VRFV2PlusClient"
+        ],
+        "methods": [
+          "(address,uint256,bytes32)",
+          "requestRandomWords(bool)",
+          "getRequestStatus(uint256)",
+          "getLastRandomWords()",
+          "setCallbackGasLimit(uint32)",
+          "setRequestConfirmations(uint16)",
+          "setNumWords(uint32)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "LotteryRandomTest",
+            "src": "contracts/Lottery.sol:30"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "callbackGasLimit",
+            "src": "contracts/Lottery.sol:12"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "requestConfirmations",
+            "src": "contracts/Lottery.sol:13"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "numWords",
+            "src": "contracts/Lottery.sol:14"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "s_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:9"
+            },
+            {
+              "label": "s_pendingOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:10"
+            },
+            {
+              "label": "s_vrfCoordinator",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_contract(IVRFCoordinatorV2Plus)380",
+              "contract": "VRFConsumerBaseV2Plus",
+              "src": "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:109"
+            },
+            {
+              "label": "subscriptionId",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_uint256",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:9"
+            },
+            {
+              "label": "keyHash",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_bytes32",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:10"
+            },
+            {
+              "label": "callbackGasLimit",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint32",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:12"
+            },
+            {
+              "label": "requestConfirmations",
+              "offset": 4,
+              "slot": "5",
+              "type": "t_uint16",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:13"
+            },
+            {
+              "label": "numWords",
+              "offset": 6,
+              "slot": "5",
+              "type": "t_uint32",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:14"
+            },
+            {
+              "label": "lastRequestId",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:16"
+            },
+            {
+              "label": "lastRandomWords",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_array(t_uint256)dyn_storage",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:17"
+            },
+            {
+              "label": "requests",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_mapping(t_uint256,t_struct(RequestStatus)559_storage)",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:25"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint256)dyn_storage": {
+              "label": "uint256[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_bytes32": {
+              "label": "bytes32",
+              "numberOfBytes": "32"
+            },
+            "t_contract(IVRFCoordinatorV2Plus)380": {
+              "label": "contract IVRFCoordinatorV2Plus",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_uint256,t_struct(RequestStatus)559_storage)": {
+              "label": "mapping(uint256 => struct LotteryRandomTest.RequestStatus)",
+              "numberOfBytes": "32"
+            },
+            "t_struct(RequestStatus)559_storage": {
+              "label": "struct LotteryRandomTest.RequestStatus",
+              "members": [
+                {
+                  "label": "exists",
+                  "type": "t_bool",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "fulfilled",
+                  "type": "t_bool",
+                  "offset": 1,
+                  "slot": "0"
+                },
+                {
+                  "label": "randomWords",
+                  "type": "t_array(t_uint256)dyn_storage",
+                  "offset": 0,
+                  "slot": "1"
+                }
+              ],
+              "numberOfBytes": "64"
+            },
+            "t_uint16": {
+              "label": "uint16",
+              "numberOfBytes": "2"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            },
+            "t_uint32": {
+              "label": "uint32",
+              "numberOfBytes": "4"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:ConfirmedOwner": {
+        "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:8",
+        "version": {
+          "withMetadata": "c8b3af2cec1c0f0421f1b0edd2be82208d85f8dc42861690c9537f90d0b48e51",
+          "withoutMetadata": "a5ab3e054f7bf9051cc18658ac105cafc6683f2c71a97229602aecaebe2521f2",
+          "linkedWithoutMetadata": "a5ab3e054f7bf9051cc18658ac105cafc6683f2c71a97229602aecaebe2521f2"
+        },
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:ConfirmedOwnerWithProposal",
+          "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ConfirmedOwner",
+            "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:9"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "s_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:9"
+            },
+            {
+              "label": "s_pendingOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:10"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:ConfirmedOwnerWithProposal": {
+        "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:8",
+        "version": {
+          "withMetadata": "feaad1a5cce8a360de42f8f262b16745ee1d85efa0f08f9139421bf0ee0f17be",
+          "withoutMetadata": "85b1c605db5bec90fc901c80c05ac614736b6fec2f6d0e4df2beb2febb02727e",
+          "linkedWithoutMetadata": "85b1c605db5bec90fc901c80c05ac614736b6fec2f6d0e4df2beb2febb02727e"
+        },
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "transferOwnership(address)",
+          "acceptOwnership()",
+          "owner()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ConfirmedOwnerWithProposal",
+            "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:15"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "s_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:9"
+            },
+            {
+              "label": "s_pendingOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:10"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable": {
+        "src": "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "transferOwnership(address)",
+          "acceptOwnership()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:VRFConsumerBaseV2Plus": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:102",
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:ConfirmedOwner",
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:ConfirmedOwnerWithProposal",
+          "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable",
+          "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFMigratableConsumerV2Plus.sol:IVRFMigratableConsumerV2Plus"
+        ],
+        "libraries": [],
+        "methods": [
+          "rawFulfillRandomWords(uint256,uint256[])",
+          "setCoordinator(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "VRFConsumerBaseV2Plus",
+            "src": "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:114"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "s_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:9"
+            },
+            {
+              "label": "s_pendingOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:10"
+            },
+            {
+              "label": "s_vrfCoordinator",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_contract(IVRFCoordinatorV2Plus)380",
+              "contract": "VRFConsumerBaseV2Plus",
+              "src": "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:109"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(IVRFCoordinatorV2Plus)380": {
+              "label": "contract IVRFCoordinatorV2Plus",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFCoordinatorV2Plus.sol:IVRFCoordinatorV2Plus": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFCoordinatorV2Plus.sol:9",
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFSubscriptionV2Plus.sol:IVRFSubscriptionV2Plus"
+        ],
+        "libraries": [],
+        "methods": [
+          "requestRandomWords((bytes32,uint256,uint16,uint32,uint32,bytes))"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFMigratableConsumerV2Plus.sol:IVRFMigratableConsumerV2Plus": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFMigratableConsumerV2Plus.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "setCoordinator(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFSubscriptionV2Plus.sol:IVRFSubscriptionV2Plus": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFSubscriptionV2Plus.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "addConsumer(uint256,address)",
+          "removeConsumer(uint256,address)",
+          "cancelSubscription(uint256,address)",
+          "acceptSubscriptionOwnerTransfer(uint256)",
+          "requestSubscriptionOwnerTransfer(uint256,address)",
+          "createSubscription()",
+          "getSubscription(uint256)",
+          "pendingRequestExists(uint256)",
+          "getActiveSubscriptionIds(uint256,uint256)",
+          "fundSubscriptionWithNative(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol:VRFV2PlusClient": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol:5",
+        "version": {
+          "withMetadata": "fad6baea4983a8ca3abb5c2e76fdd514840055908ef45644b32510a6e8b39dbe",
+          "withoutMetadata": "4bc47e6051b316d7b9387d6b47bf0003cc7fabe6bf9b8d8d1e4526812e43fff6",
+          "linkedWithoutMetadata": "4bc47e6051b316d7b9387d6b47bf0003cc7fabe6bf9b8d8d1e4526812e43fff6"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/Lottery.sol:LotteryRandomTest": {
+        "src": "contracts/Lottery.sol:8",
+        "version": {
+          "withMetadata": "b8fae02137fb0e67e89929af04024996c0be13f0f29884e7580635f8d8703289",
+          "withoutMetadata": "b2d4a4c1a3b23eeb59f0c7efd131b8456c56d29d244e3e5dd67784d485c8e2be",
+          "linkedWithoutMetadata": "b2d4a4c1a3b23eeb59f0c7efd131b8456c56d29d244e3e5dd67784d485c8e2be"
+        },
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:VRFConsumerBaseV2Plus",
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:ConfirmedOwner",
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:ConfirmedOwnerWithProposal",
+          "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable",
+          "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFMigratableConsumerV2Plus.sol:IVRFMigratableConsumerV2Plus"
+        ],
+        "libraries": [
+          "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol:VRFV2PlusClient"
+        ],
+        "methods": [
+          "(address,uint256,bytes32)",
+          "requestRandomWords(bool)",
+          "getRequestStatus(uint256)",
+          "getLastRandomWords()",
+          "setCallbackGasLimit(uint32)",
+          "setRequestConfirmations(uint16)",
+          "setNumWords(uint32)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "LotteryRandomTest",
+            "src": "contracts/Lottery.sol:30"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "callbackGasLimit",
+            "src": "contracts/Lottery.sol:12"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "requestConfirmations",
+            "src": "contracts/Lottery.sol:13"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "numWords",
+            "src": "contracts/Lottery.sol:14"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "s_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:9"
+            },
+            {
+              "label": "s_pendingOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:10"
+            },
+            {
+              "label": "s_vrfCoordinator",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_contract(IVRFCoordinatorV2Plus)380",
+              "contract": "VRFConsumerBaseV2Plus",
+              "src": "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:109"
+            },
+            {
+              "label": "subscriptionId",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_uint256",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:9"
+            },
+            {
+              "label": "keyHash",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_bytes32",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:10"
+            },
+            {
+              "label": "callbackGasLimit",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint32",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:12"
+            },
+            {
+              "label": "requestConfirmations",
+              "offset": 4,
+              "slot": "5",
+              "type": "t_uint16",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:13"
+            },
+            {
+              "label": "numWords",
+              "offset": 6,
+              "slot": "5",
+              "type": "t_uint32",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:14"
+            },
+            {
+              "label": "lastRequestId",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:16"
+            },
+            {
+              "label": "lastRandomWords",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_array(t_uint256)dyn_storage",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:17"
+            },
+            {
+              "label": "requests",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_mapping(t_uint256,t_struct(RequestStatus)559_storage)",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:25"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint256)dyn_storage": {
+              "label": "uint256[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_bytes32": {
+              "label": "bytes32",
+              "numberOfBytes": "32"
+            },
+            "t_contract(IVRFCoordinatorV2Plus)380": {
+              "label": "contract IVRFCoordinatorV2Plus",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_uint256,t_struct(RequestStatus)559_storage)": {
+              "label": "mapping(uint256 => struct LotteryRandomTest.RequestStatus)",
+              "numberOfBytes": "32"
+            },
+            "t_struct(RequestStatus)559_storage": {
+              "label": "struct LotteryRandomTest.RequestStatus",
+              "members": [
+                {
+                  "label": "exists",
+                  "type": "t_bool",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "fulfilled",
+                  "type": "t_bool",
+                  "offset": 1,
+                  "slot": "0"
+                },
+                {
+                  "label": "randomWords",
+                  "type": "t_array(t_uint256)dyn_storage",
+                  "offset": 0,
+                  "slot": "1"
+                }
+              ],
+              "numberOfBytes": "64"
+            },
+            "t_uint16": {
+              "label": "uint16",
+              "numberOfBytes": "2"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            },
+            "t_uint32": {
+              "label": "uint32",
+              "numberOfBytes": "4"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:ConfirmedOwner": {
+        "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:8",
+        "version": {
+          "withMetadata": "c8b3af2cec1c0f0421f1b0edd2be82208d85f8dc42861690c9537f90d0b48e51",
+          "withoutMetadata": "a5ab3e054f7bf9051cc18658ac105cafc6683f2c71a97229602aecaebe2521f2",
+          "linkedWithoutMetadata": "a5ab3e054f7bf9051cc18658ac105cafc6683f2c71a97229602aecaebe2521f2"
+        },
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:ConfirmedOwnerWithProposal",
+          "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ConfirmedOwner",
+            "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:9"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "s_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:9"
+            },
+            {
+              "label": "s_pendingOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:10"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:ConfirmedOwnerWithProposal": {
+        "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:8",
+        "version": {
+          "withMetadata": "feaad1a5cce8a360de42f8f262b16745ee1d85efa0f08f9139421bf0ee0f17be",
+          "withoutMetadata": "85b1c605db5bec90fc901c80c05ac614736b6fec2f6d0e4df2beb2febb02727e",
+          "linkedWithoutMetadata": "85b1c605db5bec90fc901c80c05ac614736b6fec2f6d0e4df2beb2febb02727e"
+        },
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "transferOwnership(address)",
+          "acceptOwnership()",
+          "owner()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ConfirmedOwnerWithProposal",
+            "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:15"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "s_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:9"
+            },
+            {
+              "label": "s_pendingOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:10"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable": {
+        "src": "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "transferOwnership(address)",
+          "acceptOwnership()"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:VRFConsumerBaseV2Plus": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:102",
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:ConfirmedOwner",
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:ConfirmedOwnerWithProposal",
+          "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable",
+          "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFMigratableConsumerV2Plus.sol:IVRFMigratableConsumerV2Plus"
+        ],
+        "libraries": [],
+        "methods": [
+          "rawFulfillRandomWords(uint256,uint256[])",
+          "setCoordinator(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "VRFConsumerBaseV2Plus",
+            "src": "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:114"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "s_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:9"
+            },
+            {
+              "label": "s_pendingOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:10"
+            },
+            {
+              "label": "s_vrfCoordinator",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_contract(IVRFCoordinatorV2Plus)380",
+              "contract": "VRFConsumerBaseV2Plus",
+              "src": "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:109"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_contract(IVRFCoordinatorV2Plus)380": {
+              "label": "contract IVRFCoordinatorV2Plus",
+              "numberOfBytes": "20"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFCoordinatorV2Plus.sol:IVRFCoordinatorV2Plus": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFCoordinatorV2Plus.sol:9",
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFSubscriptionV2Plus.sol:IVRFSubscriptionV2Plus"
+        ],
+        "libraries": [],
+        "methods": [
+          "requestRandomWords((bytes32,uint256,uint16,uint32,uint32,bytes))"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFMigratableConsumerV2Plus.sol:IVRFMigratableConsumerV2Plus": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFMigratableConsumerV2Plus.sol:7",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "setCoordinator(address)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFSubscriptionV2Plus.sol:IVRFSubscriptionV2Plus": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFSubscriptionV2Plus.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "addConsumer(uint256,address)",
+          "removeConsumer(uint256,address)",
+          "cancelSubscription(uint256,address)",
+          "acceptSubscriptionOwnerTransfer(uint256)",
+          "requestSubscriptionOwnerTransfer(uint256,address)",
+          "createSubscription()",
+          "getSubscription(uint256)",
+          "pendingRequestExists(uint256)",
+          "getActiveSubscriptionIds(uint256,uint256)",
+          "fundSubscriptionWithNative(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol:VRFV2PlusClient": {
+        "src": "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol:5",
+        "version": {
+          "withMetadata": "fad6baea4983a8ca3abb5c2e76fdd514840055908ef45644b32510a6e8b39dbe",
+          "withoutMetadata": "4bc47e6051b316d7b9387d6b47bf0003cc7fabe6bf9b8d8d1e4526812e43fff6",
+          "linkedWithoutMetadata": "4bc47e6051b316d7b9387d6b47bf0003cc7fabe6bf9b8d8d1e4526812e43fff6"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/Lottery.sol:LotteryRandomTest": {
+        "src": "contracts/Lottery.sol:8",
+        "version": {
+          "withMetadata": "b8fae02137fb0e67e89929af04024996c0be13f0f29884e7580635f8d8703289",
+          "withoutMetadata": "b2d4a4c1a3b23eeb59f0c7efd131b8456c56d29d244e3e5dd67784d485c8e2be",
+          "linkedWithoutMetadata": "b2d4a4c1a3b23eeb59f0c7efd131b8456c56d29d244e3e5dd67784d485c8e2be"
+        },
+        "inherit": [
+          "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:VRFConsumerBaseV2Plus",
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwner.sol:ConfirmedOwner",
+          "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:ConfirmedOwnerWithProposal",
+          "@chainlink/contracts/src/v0.8/shared/interfaces/IOwnable.sol:IOwnable",
+          "@chainlink/contracts/src/v0.8/vrf/dev/interfaces/IVRFMigratableConsumerV2Plus.sol:IVRFMigratableConsumerV2Plus"
+        ],
+        "libraries": [
+          "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol:VRFV2PlusClient"
+        ],
+        "methods": [
+          "(address,uint256,bytes32)",
+          "requestRandomWords(bool)",
+          "getRequestStatus(uint256)",
+          "getLastRandomWords()",
+          "setCallbackGasLimit(uint32)",
+          "setRequestConfirmations(uint16)",
+          "setNumWords(uint32)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "LotteryRandomTest",
+            "src": "contracts/Lottery.sol:30"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "callbackGasLimit",
+            "src": "contracts/Lottery.sol:12"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "requestConfirmations",
+            "src": "contracts/Lottery.sol:13"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "numWords",
+            "src": "contracts/Lottery.sol:14"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "s_owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:9"
+            },
+            {
+              "label": "s_pendingOwner",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_address",
+              "contract": "ConfirmedOwnerWithProposal",
+              "src": "@chainlink/contracts/src/v0.8/shared/access/ConfirmedOwnerWithProposal.sol:10"
+            },
+            {
+              "label": "s_vrfCoordinator",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_contract(IVRFCoordinatorV2Plus)380",
+              "contract": "VRFConsumerBaseV2Plus",
+              "src": "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol:109"
+            },
+            {
+              "label": "subscriptionId",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_uint256",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:9"
+            },
+            {
+              "label": "keyHash",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_bytes32",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:10"
+            },
+            {
+              "label": "callbackGasLimit",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_uint32",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:12"
+            },
+            {
+              "label": "requestConfirmations",
+              "offset": 4,
+              "slot": "5",
+              "type": "t_uint16",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:13"
+            },
+            {
+              "label": "numWords",
+              "offset": 6,
+              "slot": "5",
+              "type": "t_uint32",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:14"
+            },
+            {
+              "label": "lastRequestId",
+              "offset": 0,
+              "slot": "6",
+              "type": "t_uint256",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:16"
+            },
+            {
+              "label": "lastRandomWords",
+              "offset": 0,
+              "slot": "7",
+              "type": "t_array(t_uint256)dyn_storage",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:17"
+            },
+            {
+              "label": "requests",
+              "offset": 0,
+              "slot": "8",
+              "type": "t_mapping(t_uint256,t_struct(RequestStatus)559_storage)",
+              "contract": "LotteryRandomTest",
+              "src": "contracts/Lottery.sol:25"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_array(t_uint256)dyn_storage": {
+              "label": "uint256[]",
+              "numberOfBytes": "32"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_bytes32": {
+              "label": "bytes32",
+              "numberOfBytes": "32"
+            },
+            "t_contract(IVRFCoordinatorV2Plus)380": {
+              "label": "contract IVRFCoordinatorV2Plus",
+              "numberOfBytes": "20"
+            },
+            "t_mapping(t_uint256,t_struct(RequestStatus)559_storage)": {
+              "label": "mapping(uint256 => struct LotteryRandomTest.RequestStatus)",
+              "numberOfBytes": "32"
+            },
+            "t_struct(RequestStatus)559_storage": {
+              "label": "struct LotteryRandomTest.RequestStatus",
+              "members": [
+                {
+                  "label": "exists",
+                  "type": "t_bool",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "fulfilled",
+                  "type": "t_bool",
+                  "offset": 1,
+                  "slot": "0"
+                },
+                {
+                  "label": "randomWords",
+                  "type": "t_array(t_uint256)dyn_storage",
+                  "offset": 0,
+                  "slot": "1"
+                }
+              ],
+              "numberOfBytes": "64"
+            },
+            "t_uint16": {
+              "label": "uint16",
+              "numberOfBytes": "2"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            },
+            "t_uint32": {
+              "label": "uint32",
+              "numberOfBytes": "4"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    }
+  ]
+}
