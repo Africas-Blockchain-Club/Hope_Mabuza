@@ -4,18 +4,19 @@ const { ethers, upgrades } = require("hardhat");
 async function main() {
   const proxyAddress = process.env.PROXY_ADDRESS;
 
-  console.log("Upgrading proxy to Lottery1...");
+  console.log("Upgrading proxy to Lottery2...");
 
-  const Lottery1 = await ethers.getContractFactory("Lottery1");
+  const Lottery2 = await ethers.getContractFactory("Lottery2");
 
-  const upgraded = await upgrades.upgradeProxy(proxyAddress, Lottery1, {
+  const upgraded = await upgrades.upgradeProxy(proxyAddress, Lottery2, {
+    call: { fn: "initialize3" },
     kind: "uups",
   });
 
   await upgraded.waitForDeployment();
-  console.log("Proxy upgraded to Lottery1 at:", proxyAddress);
+  console.log("Proxy upgraded to Lottery2 at:", proxyAddress);
 
-  const contract = await ethers.getContractAt("Lottery1", proxyAddress);
+  const contract = await ethers.getContractAt("Lottery2", proxyAddress);
 
   let roundId = await contract.currentRoundId();
   let round = await contract.rounds(roundId);

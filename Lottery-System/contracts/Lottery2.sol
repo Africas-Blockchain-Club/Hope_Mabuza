@@ -9,7 +9,7 @@ import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Ini
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-contract Lottery1 is
+contract Lottery2 is
     Initializable,
     OwnableUpgradeable,
     UUPSUpgradeable,
@@ -29,7 +29,7 @@ contract Lottery1 is
 
     uint8[7] public winningNumbers;
 
-    uint256 public constant OWNER_FEE_BPS = 1000; // 10%
+    uint256 public constant OWNER_FEE_BPS = 1000;
     uint256 public constant BPS_DENOMINATOR = 10_000;
 
     struct RequestStatus {
@@ -62,8 +62,6 @@ contract Lottery1 is
     mapping(uint256 => Ticket[]) private roundTickets;
     mapping(uint256 => uint8[7]) public roundWinningNumbers;
 
-    mapping(uint256 => mapping(address => bool)) public hasEntered;
-
     mapping(address => uint256) public pendingRewards;
 
     uint256 public ownerFeesAccrued;
@@ -73,6 +71,9 @@ contract Lottery1 is
     uint256 public entryFee;
     uint256 public roundDuration;
     bool public automationNativePayment;
+
+    // new in Lottery2
+    mapping(uint256 => mapping(address => bool)) public hasEntered;
 
     event RequestSent(uint256 requestId, uint32 numWords);
     event RequestFulfilled(uint256 requestId, uint256[] randomWords);
@@ -87,8 +88,7 @@ contract Lottery1 is
     event RewardWithdrawn(address indexed player, uint256 amount);
     event OwnerFeesWithdrawn(address indexed owner, uint256 amount);
 
-    // IMPORTANT:
-    // Recalculate this gap against your previous deployed storage layout before upgrading.
+    // IMPORTANT: Recalculate this gap before upgrading to Lottery3
     uint256[38] private __gap;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
@@ -97,14 +97,8 @@ contract Lottery1 is
     }
 
     /// @custom:oz-upgrades-validate-as-initializer
-    function initialize2(
-       
-    ) public reinitializer(2) {
+    function initialize3() public reinitializer(3) {
         __Ownable_init_unchained();
-
-        entryFee = 0.0001 ether;
-        roundDuration = 5 minutes;
-        automationNativePayment = false;
     }
 
     function buyTicket(uint8[7] calldata numbers) external payable {
@@ -112,10 +106,10 @@ contract Lottery1 is
         _validateTicketNumbers(numbers);
 
         RoundInfo storage round = rounds[currentRoundId];
-        require(!hasEntered[currentRoundId][msg.sender], "Already entered this round");
         require(round.active, "No active round");
         require(!round.drawRequested, "Draw already requested");
         require(block.timestamp < round.endTime, "Round expired");
+        require(!hasEntered[currentRoundId][msg.sender], "Already entered this round");
 
         hasEntered[currentRoundId][msg.sender] = true;
         round.pot += msg.value;
@@ -138,7 +132,6 @@ contract Lottery1 is
         );
     }
 
-    // Chainlink Automation simulates this offchain
     function checkUpkeep(bytes calldata)
         external
         view
@@ -155,7 +148,6 @@ contract Lottery1 is
         performData = abi.encode(currentRoundId);
     }
 
-    // Chainlink Automation calls this onchain when checkUpkeep is true
     function performUpkeep(bytes calldata performData) external override {
         uint256 roundIdFromCheck = abi.decode(performData, (uint256));
 
@@ -384,7 +376,6 @@ contract Lottery1 is
         }
     }
 
-    // Kept as-is from your V1 logic
     function _generateWinningNumbers(uint256[] calldata randomWords)
         internal
         pure
