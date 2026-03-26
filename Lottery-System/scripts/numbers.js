@@ -2,37 +2,29 @@ require("dotenv").config();
 const { ethers } = require("hardhat");
 
 async function main() {
-  const contractAddress = "0x123E14a0815fAB7b72376473Cd72CB23e12BB4e1";
+  const contractAddress = process.env.PROXY_ADDRESS;
 
-  const contract = await ethers.getContractAt(
-    "LotteryRandomTest",
-    contractAddress
-  );
+  const contract = await ethers.getContractAt("WinningNumbers", contractAddress);
 
   console.log("Requesting random words...");
-
-  const tx = await contract.requestRandomWords(false); // or true
-  const receipt = await tx.wait();
-
-  console.log("Request sent!");
+  const tx = await contract.requestRandomWords(false);
+  await tx.wait();
 
   const requestId = await contract.lastRequestId();
   console.log("Request ID:", requestId.toString());
 
-  // wait for Chainlink VRF
-  console.log("Waiting for Chainlink response...");
-  await new Promise((resolve) => setTimeout(resolve, 60000)); // 60 seconds
+  console.log("Waiting for Chainlink VRF fulfillment (60s)...");
+  await new Promise((resolve) => setTimeout(resolve, 60000));
 
-  const [fulfilled, randomWords] =
-    await contract.getRequestStatus(requestId);
+  const [fulfilled] = await contract.getRequestStatus(requestId);
 
   if (!fulfilled) {
-    console.log("Still not fulfilled. Try again in a bit...");
+    console.log("Not fulfilled yet. Run the script again after a few more seconds.");
     return;
   }
 
-  console.log("Random Words:");
-  console.log(randomWords);
+  const winningNumbers = await contract.getWinningNumbers();
+  console.log("\n🎰 Winning Numbers:", winningNumbers.map((n) => n.toString()).join(" - "));
 }
 
 main().catch((error) => {

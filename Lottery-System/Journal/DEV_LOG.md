@@ -80,3 +80,39 @@ pnpm add ethers@6
 - Added logic to ensure the 7 numbers are **unique** (no duplicates)
 - Numbers are then **sorted in ascending order** and saved into `winningNumbers[7]`
 - Made the contract **upgradeable** using OpenZeppelin's upgradeable proxy pattern so future improvements can be made without redeploying from scratch
+
+---
+
+## [5] Implemented Winning Numbers with UUPS Upgradeable Pattern
+
+**What Changed:**
+- Refactored `WinningNumbers.sol` to use **UUPS (Universal Upgradeable Proxy Standard)** pattern with OpenZeppelin's upgradeable contracts
+- Removed `VRFConsumerBaseV2Plus` inheritance to avoid ownership conflicts between Chainlink's `ConfirmedOwner` and OpenZeppelin's `OwnableUpgradeable`
+- Implemented VRF callback directly using `rawFulfillRandomWords()` which the Chainlink coordinator calls after fulfilling the randomness request
+- Added `_generateWinningNumbers()` logic to convert raw random words into 7 unique numbers between 1-49, sorted in ascending order
+
+**Why Upgradeable:**
+Making the contract upgradeable means we only need to add the **proxy address** as a consumer on Chainlink VRF once. When we upgrade the implementation contract in the future, the proxy address stays the same, so we don't have to re-register consumers on Chainlink every time we deploy a new version. This saves gas and simplifies the workflow.
+
+**Environment Setup:**
+- Added `PROXY_ADDRESS` to `.env` after deploying the proxy
+- This allows `numbers.js` to interact with the deployed proxy without hardcoding addresses
+
+**Scripts:**
+- `scripts/proxy.js` — deploys the UUPS proxy with `WinningNumbers` as the implementation, passing `vrfCoordinator`, `subscriptionId`, and `keyHash` to the `initialize()` function
+- `scripts/numbers.js` — refactored to:
+  - Load `PROXY_ADDRESS` from `.env`
+  - Call `requestRandomWords(false)` on the proxy
+  - Wait 60 seconds for Chainlink VRF fulfillment
+  - Fetch and print the 7 winning numbers using `getWinningNumbers()`
+
+**Output Format:**
+```
+🎰 Winning Numbers: 3 - 12 - 18 - 27 - 35 - 41 - 48
+```
+
+**Key Benefits:**
+- Single consumer registration on Chainlink (proxy address never changes)
+- Future upgrades don't require re-registering with Chainlink
+- Clean separation between proxy (storage) and implementation (logic)
+- Owner is properly set via `OwnableUpgradeable` in the proxy's storage during `initialize()`
