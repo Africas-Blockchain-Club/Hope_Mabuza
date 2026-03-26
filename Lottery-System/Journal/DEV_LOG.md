@@ -116,3 +116,120 @@ Making the contract upgradeable means we only need to add the **proxy address** 
 - Future upgrades don't require re-registering with Chainlink
 - Clean separation between proxy (storage) and implementation (logic)
 - Owner is properly set via `OwnableUpgradeable` in the proxy's storage during `initialize()`
+
+---
+
+## [6] Deployed Full Lottery Logic — `Lottery1.sol`
+
+**What Changed:**
+- Created `Lottery1.sol` as the first full upgrade over `WinningNumbers.sol`
+- Added complete lottery logic: rounds, tickets, reward tiers, rollover pool, owner fees
+- Integrated `AutomationCompatibleInterface` for Chainlink Automation support
+- Used `reinitializer(2)` since `WinningNumbers` already consumed version 1
+- Renamed initializer to `initialize2()` with no args — VRF config already stored in proxy from V1
+- Used `__Ownable_init_unchained()` to avoid re-initializing ownership already set in V1
+- Removed `_startNewRound()` from `initialize2` — a round was already active from `WinningNumbers`
+- Added `startRound()` owner function to manually kick off the first `Lottery1` round
+- Fixed storage layout: moved `entryFee`, `roundDuration`, `automationNativePayment` after all V1 variables so they consume gap slots correctly
+- Set `__gap[39]` to account for 11 new storage variables added in this upgrade
+
+**Round Logic:**
+- `buyTicket(uint8[7])` — player submits 7 numbers (1–49, no duplicates) and pays `entryFee`
+- `checkUpkeep()` — Chainlink Automation polls this; returns true when round has expired
+- `performUpkeep()` — called by Automation; skips empty rounds or requests VRF randomness
+- `rawFulfillRandomWords()` — called by VRF coordinator; generates winning numbers and settles round
+- `_settleRound()` — calculates matches, splits pot, assigns rewards, starts next round
+- `_rollEmptyRoundForward()` — skips round with no players, rolls pot to next round
+
+**Reward Tiers (of 90% prize pool):**
+| Matches | Share |
+|---------|-------|
+| 2       | 5%    |
+| 3       | 10%   |
+| 4       | 15%   |
+| 5       | 20%   |
+| 6       | 20%   |
+| 7       | 30%   |
+
+- 10% of pot goes to owner
+- Unclaimed tiers roll over to next round
+
+**Scripts:**
+- `scripts/upgrade.js` — upgrades proxy to `Lottery1`, calls `initialize2`, starts first round if none active
+- `scripts/players.js` — buys tickets, polls for round result, prints winning numbers and rewards
+
+---
+
+## [7] Set Up Chainlink Automation
+
+**Why:**
+Without Automation, rounds expire but nothing happens — someone would have to manually call `performUpkeep` every time. Automation makes the lottery fully self-running.
+
+**Setup Steps:**
+1. Go to [automation.chain.link](https://automation.chain.link)
+2. Connect wallet
+3. Click **Register new Upkeep** → **Custom Logic**
+4. Enter proxy address as the contract address
+5. Fund with testnet LINK
+6. Register
+
+**Why proxy address:**
+Since the contract is upgradeable, the proxy address never changes. Automation only needs to be registered once — it works across all future upgrades automatically.
+
+**Contract interface:**
+`Lottery1` implements `AutomationCompatibleInterface` which requires:
+- `checkUpkeep()` — Chainlink simulates this off-chain to check if work is needed
+- `performUpkeep()` — Chainlink calls this on-chain when `checkUpkeep` returns true
+
+---
+
+## [T4] End-to-End Test — Lottery1 on Sepolia
+
+- Deployed fresh proxy with `proxy.js`
+- Added proxy address as consumer on VRF subscription at [vrf.chain.link](https://vrf.chain.link)
+- Added proxy address as upkeep contract on Automation at [automation.chain.link](https://automation.chain.link)
+- Ran `upgrade.js` → upgraded to `Lottery1`, started round 1
+- Ran `players.js` → bought 2 tickets, waited for round to expire
+- Chainlink Automation triggered `performUpkeep` ✅
+- Chainlink VRF fulfilled randomness ✅
+- Winning numbers generated and round settled ✅
+- Rollover correctly carried into next round pot ✅
+
+**Sample output:**
+```
+🎰 Winning Numbers: 4 - 13 - 16 - 27 - 40 - 44 - 47
+
+--- Results ---
+Player 1 numbers : 3 - 12 - 18 - 27 - 35 - 41 - 48
+Player 1 matches : 0
+Player 1 reward  : 0.0 ETH
+Player 2 numbers : 5 - 11 - 19 - 22 - 33 - 40 - 47
+Player 2 matches : 0
+Player 2 reward  : 0.0 ETH
+
+Round pot        : 0.000704 ETH
+Owner fee (10%)  : 0.0000704 ETH
+Next round pot   : 0.0006336 ETH (includes rollover)
+```
+
+---
+
+## [8] Upgraded to `Lottery2.sol` — One Entry Per Round
+
+**What Changed:**
+- Created `Lottery2.sol` as the next upgrade over `Lottery1`
+- Added `hasEntered[roundId][player]` mapping to restrict each wallet to one ticket per round
+- `buyTicket()` now reverts with `"Already entered this round"` if the same wallet tries to enter twice
+- Used `reinitializer(3)` since `Lottery1` consumed version 2
+- `__gap` reduced from `[38]` to `[37]` to account for the new `hasEntered` mapping
+- Storage layout carefully ordered to match deployed `Lottery1` slots exactly
+
+**Why a new contract instead of modifying Lottery1:**
+`Lottery1` is already deployed and tested. Creating `Lottery2` keeps each upgrade as a clean, auditable step — `Lottery1` remains unchanged as a reference point.
+
+**Scripts:**
+- `scripts/upgrade2.js` — upgrades proxy to `Lottery2`, calls `initialize3`, starts round if none active
+- `scripts/players.js` — updated to use `Lottery2`, tests one-entry restriction, polls for results
+
+---
+
