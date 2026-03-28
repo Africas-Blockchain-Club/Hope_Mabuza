@@ -104,3 +104,6 @@ Deploy the contract with two options:
 ## License
 
 MIT License
+
+Successfully verified contract SimpleVoting on the block explorer.
+https://sepolia.etherscan.io/address/0x6f2490c4a22fB7532060A94fa4c8a85131b065a8#code

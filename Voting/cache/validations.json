@@ -1,0 +1,127 @@
+{
+  "version": "3.4",
+  "log": [
+    {
+      "contracts/Voting.sol:SimpleVoting": {
+        "src": "contracts/Voting.sol:4",
+        "version": {
+          "withMetadata": "0d21597091800b8b038028d02246fd2b78b15faf3c216e46c6a5ddbba99ee2cc",
+          "withoutMetadata": "902de661b7acc2612a2723504bf11c0867d7069a6d7c522f425783e4d3756a7e",
+          "linkedWithoutMetadata": "902de661b7acc2612a2723504bf11c0867d7069a6d7c522f425783e4d3756a7e"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(string,string)",
+          "viewOptions()",
+          "vote(uint256)",
+          "winner()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "SimpleVoting",
+            "src": "contracts/Voting.sol:24"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "label": "owner",
+              "offset": 0,
+              "slot": "0",
+              "type": "t_address",
+              "contract": "SimpleVoting",
+              "src": "contracts/Voting.sol:7"
+            },
+            {
+              "label": "option1Votes",
+              "offset": 0,
+              "slot": "1",
+              "type": "t_uint256",
+              "contract": "SimpleVoting",
+              "src": "contracts/Voting.sol:13"
+            },
+            {
+              "label": "option2Votes",
+              "offset": 0,
+              "slot": "2",
+              "type": "t_uint256",
+              "contract": "SimpleVoting",
+              "src": "contracts/Voting.sol:14"
+            },
+            {
+              "label": "voters",
+              "offset": 0,
+              "slot": "3",
+              "type": "t_mapping(t_address,t_struct(Voter)8_storage)",
+              "contract": "SimpleVoting",
+              "src": "contracts/Voting.sol:16"
+            },
+            {
+              "label": "option1",
+              "offset": 0,
+              "slot": "4",
+              "type": "t_string_storage",
+              "contract": "SimpleVoting",
+              "src": "contracts/Voting.sol:18"
+            },
+            {
+              "label": "option2",
+              "offset": 0,
+              "slot": "5",
+              "type": "t_string_storage",
+              "contract": "SimpleVoting",
+              "src": "contracts/Voting.sol:19"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address",
+              "numberOfBytes": "20"
+            },
+            "t_bool": {
+              "label": "bool",
+              "numberOfBytes": "1"
+            },
+            "t_mapping(t_address,t_struct(Voter)8_storage)": {
+              "label": "mapping(address => struct SimpleVoting.Voter)",
+              "numberOfBytes": "32"
+            },
+            "t_string_storage": {
+              "label": "string",
+              "numberOfBytes": "32"
+            },
+            "t_struct(Voter)8_storage": {
+              "label": "struct SimpleVoting.Voter",
+              "members": [
+                {
+                  "label": "hasVoted",
+                  "type": "t_bool",
+                  "offset": 0,
+                  "slot": "0"
+                },
+                {
+                  "label": "votedFor",
+                  "type": "t_string_storage",
+                  "offset": 0,
+                  "slot": "1"
+                }
+              ],
+              "numberOfBytes": "64"
+            },
+            "t_uint256": {
+              "label": "uint256",
+              "numberOfBytes": "32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": true,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    }
+  ]
+}

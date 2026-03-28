@@ -1,19 +1,29 @@
-const {ethers, upgrades} = require("hardhat");
+const {ethers} = require("hardhat");
 
 async function main(){
-    const ImplV1 = await ethers.getContractFactory("VotingV1");
+    const [owner, voter1, voter2, voter3] = await ethers.getSigners();
 
-    const proxy = await upgrades.deployProxy(ImplV1, ["x402", "Auditing"],
-        {initializer: "initialize", kind: "uups"}
-    );
+    const Voting = await ethers.getContractFactory("SimpleVoting");
+    const voting = await Voting.deploy("Milk", "Water");
+    await voting.waitForDeployment();
 
-    await proxy.waitForDeployment();
+    const contractAddress = await voting.getAddress();
+    console.log("Contract address: ", contractAddress);
 
-    const proxyAddress = await proxy.getAddress();
-    console.log("Proxy address: ", proxyAddress);
+    const options = await voting.viewOptions();
+    console.log(options);
 
-    const implementaionAddress = await upgrades.erc1967.getImplementationAddress(proxyAddress);
-    console.log("Implementation address: ", implementaionAddress);
+    await voting.connect(voter1).vote(1);
+    console.log("Voter1 voted Milk");
+
+    await voting.connect(voter2).vote(1);
+    console.log("Voter2 voted Milk");
+
+    await voting.connect(voter3).vote(2);
+    console.log("Voter3 voted Water");
+
+    const winner = await voting.winner();
+    console.log(winner);
 
 }
 main().catch(console.error)
