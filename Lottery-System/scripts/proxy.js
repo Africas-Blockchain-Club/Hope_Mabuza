@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { ethers, upgrades } = require("hardhat");
 
+// Deploys the initial UUPS proxy with WinningNumbers as the first implementation
 async function main() {
   const vrfCoordinator = process.env.VRF_COORDINATOR;
   const subscriptionId = process.env.SUBSCRIPTION_ID;

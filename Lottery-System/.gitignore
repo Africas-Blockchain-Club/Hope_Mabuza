@@ -1,1 +1,20 @@
+# environment variables
 .env
+.env.*
+
+# dependencies
+node_modules
+
+# hardhat compiled output
+artifacts
+cache
+
+# openzeppelin upgrade manifests contain deployed addresses — keep locally, not in repo
+# remove this line if you want to track deployment history in git
+.openzeppelin
+
+# hardhat debug logs
+*.log
+
+# os
+.DS_Store

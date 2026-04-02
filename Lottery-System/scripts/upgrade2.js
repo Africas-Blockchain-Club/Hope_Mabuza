@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { ethers, upgrades } = require("hardhat");
 
+// Upgrades the proxy to Lottery2 implementation and calls initialize3
 async function main() {
   const proxyAddress = process.env.PROXY_ADDRESS;
 

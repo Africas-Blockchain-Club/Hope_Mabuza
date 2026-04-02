@@ -28,6 +28,7 @@ export default function Home() {
   const [hasEntered, setHasEntered] = useState(false);
   const [pendingReward, setPendingReward] = useState("0");
   const [lastWinningNumbers, setLastWinningNumbers] = useState(null);
+  const [paused, setPaused] = useState(false);
 
   const [selected, setSelected] = useState([]);
   const [status, setStatus] = useState("");
@@ -40,7 +41,7 @@ export default function Home() {
     setAccount(null); setContract(null); setRound(null); setRoundId(null);
     setEntryFee(null); setTicketCount(0); setPot("0"); setTimeLeft(null);
     setHasEntered(false); setPendingReward("0"); setLastWinningNumbers(null);
-    setSelected([]); setStatus("");
+    setPaused(false); setSelected([]); setStatus("");
   };
 
   const connect = async () => {
@@ -63,6 +64,7 @@ export default function Home() {
       const count = await contract.getRoundTicketCount(id);
       const entered = await contract.hasEntered(id, account);
       const reward = await contract.pendingRewards(account);
+      const isPaused = await contract.paused();
       setRoundId(id.toString());
       setRound(r);
       setEntryFee(fee);
@@ -70,6 +72,7 @@ export default function Home() {
       setPot(ethers.formatEther(r.pot));
       setHasEntered(entered);
       setPendingReward(ethers.formatEther(reward));
+      setPaused(isPaused);
       if (id > 1n) {
         const prev = await contract.getRoundWinningNumbers(id - 1n);
         setLastWinningNumbers(prev.map((n) => n.toString()));
@@ -80,7 +83,7 @@ export default function Home() {
   useEffect(() => {
     if (!round) return;
     const calc = () => {
-      const diff = Number(round.endTime) * 1000 - Date.now();
+      const diff = Number(round.endTime.toString()) * 1000 - Date.now();
       if (diff <= 0) return setTimeLeft("Draw pending...");
       const m = Math.floor(diff / 60000);
       const s = Math.floor((diff % 60000) / 1000);
@@ -136,13 +139,15 @@ export default function Home() {
     }
   };
 
-  const roundStatus = round
+  const roundStatus = paused ? "PAUSED"
+    : round
     ? round.drawRequested ? "DRAW IN PROGRESS"
     : round.active ? "OPEN"
     : "CLOSED"
     : "—";
 
   const statusColor = roundStatus === "OPEN" ? G.gold
+    : roundStatus === "PAUSED" ? "#e67e22"
     : roundStatus === "DRAW IN PROGRESS" ? "#e67e22"
     : G.grey;
 
@@ -211,7 +216,7 @@ export default function Home() {
               <StatBox label="ROUND" value={`#${roundId ?? "—"}`} />
               <StatBox label="STATUS" value={roundStatus} valueColor={statusColor} />
               <StatBox label="POT" value={`${pot} ETH`} valueColor={G.goldLight} />
-              <StatBox label="TIME LEFT" value={timeLeft ?? "—"} valueColor={roundStatus === "OPEN" ? G.white : G.grey} />
+              <StatBox label="TIME LEFT" value={paused ? "—" : timeLeft ?? "—"} valueColor={roundStatus === "OPEN" ? G.white : G.grey} />
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2px", marginBottom: "24px" }}>
               <StatBox label="TICKETS SOLD" value={ticketCount} />
@@ -244,7 +249,12 @@ export default function Home() {
             )}
 
             {/* ticket entry */}
-            {hasEntered ? (
+            {paused ? (
+              <div style={{ background: G.mid, border: `2px solid #e67e22`, padding: "24px", textAlign: "center", marginBottom: "24px" }}>
+                <div style={{ fontSize: "16px", fontWeight: "bold", color: "#e67e22", letterSpacing: "2px" }}>⏸ GAME PAUSED</div>
+                <div style={{ fontSize: "12px", color: G.grey, marginTop: "8px" }}>The game is temporarily paused. Check back soon.</div>
+              </div>
+            ) : hasEntered ? (
               <div style={{ background: G.mid, border: `1px solid ${G.border}`, padding: "24px", textAlign: "center", marginBottom: "24px" }}>
                 <div style={{ fontSize: "16px", fontWeight: "bold", color: G.gold, letterSpacing: "2px" }}>✅ TICKET SUBMITTED</div>
                 <div style={{ fontSize: "12px", color: G.grey, marginTop: "8px" }}>Your entry is in. Check back after the draw for results.</div>
@@ -369,10 +379,4 @@ const outlineBtn = {
   fontSize: "13px",
   letterSpacing: "1px",
   borderRadius: "2px",
-};
-
-const G_REF = {
-  dark: "#1a0a2e", mid: "#2a1a4a", light: "#3d2a6b",
-  gold: "#c9a84c", goldLight: "#e8c96a", white: "#f5f5f0",
-  grey: "#9a8aaa", border: "#4a3a6b",
 };

@@ -233,3 +233,212 @@ Next round pot   : 0.0006336 ETH (includes rollover)
 
 ---
 
+
+## [9] Updated `Lottery3.sol` — Pause / Unpause Logic
+
+**What Changed:**
+
+- Added `bool public paused` state variable after `hasEntered` mapping
+- Reduced `__gap` from `[38]` to `[37]` to account for the new `paused` bool slot
+- Added two new events: `GamePaused(address indexed by)` and `GameUnpaused(address indexed by)`
+- Added `whenNotPaused` modifier that reverts with `"Game is paused"` when `paused` is true
+- Added `pauseGame()` — `onlyOwner`, reverts if already paused, sets `paused = true`
+- Added `unpauseGame()` — `onlyOwner`, reverts if not paused, sets `paused = false`
+- `initialize3()` explicitly sets `paused = false` so state is clean after upgrade
+
+**Functions updated with `whenNotPaused`:**
+| Function | Reason |
+|---|---|
+| `buyTicket` | Prevents ticket sales while game is paused |
+| `performUpkeep` | Prevents automation from closing rounds while paused |
+| `startRound` | Prevents owner from accidentally starting a round while paused |
+
+**`checkUpkeep` updated:**
+- Added `!paused &&` as the first condition so Chainlink Automation naturally returns `upkeepNeeded = false` while paused — stops automation polling without reverting
+
+**`rawFulfillRandomWords` intentionally NOT gated:**
+- If a VRF request was already sent before pausing, the Chainlink callback must be allowed to land
+- Blocking it would leave the round stuck in `drawRequested = true` with no way to settle, locking player funds permanently
+
+**Why `__gap` went from `[38]` to `[37]`:**
+- `bool` values in Solidity pack into a 32-byte slot
+- `paused` shares a slot with `automationNativePayment` (already declared before it) due to bool packing
+- However, to be safe with the upgradeable storage layout, one gap slot is consumed to guarantee no collision with future upgrades
+
+**Post-upgrade flow:**
+1. Deploy upgraded `Lottery3` implementation
+2. Call `upgradeTo` on the proxy
+3. Call `initialize3()` — sets owner, sets `paused = false`
+4. Call `startRound()` to begin the first round under Lottery3
+5. Call `pauseGame()` at any time to halt the game
+6. Call `unpauseGame()` then `startRound()` to resume
+
+
+---
+
+## [10] Deployed Lottery3 to Sepolia — Upgrade Script & Config
+
+### upgrade3.js
+
+Created `scripts/upgrade3.js` to upgrade the proxy from Lottery2 → Lottery3.
+
+**What it does:**
+- Calls `upgrades.upgradeProxy` with `initialize4` as the post-upgrade initializer call
+- Logs the pause state after upgrade to confirm `paused = false`
+- Sets round duration to 5 minutes via `setRoundDuration(300)`
+- Pauses the game immediately via `pauseGame()`
+- Prints full contract state: entry fee, round duration, round ID, active status, pause state
+
+**Errors encountered and fixed:**
+
+| Error | Cause | Fix |
+|---|---|---|
+| `Invalid account: #1 for network: sepolia` | `PLAYER1_PRIVATE_KEY` and `PLAYER2_PRIVATE_KEY` not in `.env` | Added `.filter(Boolean)` to accounts array in `hardhat.config.js` |
+| `Cannot read properties of undefined (reading 'getAddress')` | `PROXY_ADDRESS` missing from `.env` | Added `PROXY_ADDRESS=0x09Db62f499eC80Cf668512307D5640Abbb0f8a8b` to `.env` (found in `.openzeppelin/sepolia.json`) |
+| `Initializable: contract is already initialized` (first time) | `initialize3` used `reinitializer(3)` but Lottery2 already consumed version 3 | Renamed to `initialize4` with `reinitializer(4)` |
+| `Missing initializer calls for one or more parent contracts: OwnableUpgradeable` | OZ upgrades plugin validation requires parent initializer calls | Added `/// @custom:oz-upgrades-validate-as-initializer` annotation and kept `__Ownable_init_unchained()` |
+| `execution reverted` on `contract.paused()` after successful upgrade | Artifacts were stale from before recompile | Ran `npx hardhat clean && npx hardhat compile` |
+| `Initializable: contract is already initialized` (second time) | Proxy was already on Lottery3 from the previous run, script tried to upgrade again | Split post-upgrade config into a separate `config3.js` script |
+
+---
+
+### config3.js
+
+Created `scripts/config3.js` to run post-upgrade configuration separately from the upgrade itself. This is needed because once the proxy is upgraded, re-running `upgrade3.js` fails since `initialize4` has already been called.
+
+**What it does:**
+1. Calls `setRoundDuration(300)` — sets all future rounds to 5 minutes
+2. Calls `pauseGame()` — pauses the game so no rounds start automatically after upgrade
+3. Prints contract state to confirm everything applied correctly
+
+**Run with:**
+```bash
+npx hardhat run scripts/config3.js --network sepolia
+```
+
+---
+
+## [11] Frontend Updated for Lottery3
+
+### `frontend/lib/abi.js`
+- Added `paused` ABI entry so the frontend can read the pause state from the contract:
+```js
+{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"}
+```
+
+### `frontend/pages/index.js`
+
+| Change | Detail |
+|---|---|
+| Added `paused` state | `const [paused, setPaused] = useState(false)` |
+| Reset on disconnect | `setPaused(false)` added to `disconnect()` |
+| Fetched in `load()` | `const isPaused = await contract.paused()` called every 15 seconds alongside other contract reads |
+| Updated `roundStatus` | `"PAUSED"` is now the first check — takes priority over `OPEN`, `DRAW IN PROGRESS`, `CLOSED` |
+| Updated `statusColor` | `"PAUSED"` renders in orange `#e67e22` |
+| Added paused banner | When `paused === true`, the ticket entry area shows `⏸ GAME PAUSED` with a message instead of the number grid — prevents players from attempting transactions that would revert |
+
+**Paused UI banner:**
+```
+⏸ GAME PAUSED
+The game is temporarily paused. Check back soon.
+```
+
+### `frontend/.env.local`
+- `NEXT_PUBLIC_CONTRACT_ADDRESS` was already correctly set to the proxy address `0x09Db62f499eC80Cf668512307D5640Abbb0f8a8b` — no change needed
+
+
+---
+
+## [12] Operational Scripts & Bug Fixes
+
+### New Scripts
+
+**`scripts/pause.js`**
+- Checks if game is already paused before calling `pauseGame()` — exits early if already paused to avoid wasting gas on a revert
+- Prints contract state after pausing: round ID, active status, ticket count
+
+**`scripts/unpause.js`**
+- Checks if game is actually paused before calling `unpauseGame()` — exits early if not paused
+- Only calls `startRound()` if no round is currently active — fixed after initial revert caused by trying to start a round when one was already running
+- Prints full contract state after unpausing
+
+**`scripts/setduration.js`**
+- Sets `roundDuration` to any value via `setRoundDuration()`
+- Configure `NEW_DURATION_SECONDS` at the top of the script
+- Includes common values as comments:
+  ```
+  5 minutes  = 300
+  10 minutes = 600
+  30 minutes = 1800
+  1 hour     = 3600
+  6 hours    = 21600
+  12 hours   = 43200
+  24 hours   = 86400
+  ```
+- Warns that the change only affects future rounds, not the currently active one
+
+**`scripts/rollround.js`**
+- Manually triggers `performUpkeep` to force-close an expired round
+- Used when Chainlink Automation is not triggering (e.g. out of LINK)
+- Encodes `currentRoundId` as `performData` to match what `checkUpkeep` returns
+- If round has 0 tickets → calls `_rollEmptyRoundForward` → starts next round
+- If round has tickets → requests VRF → settles round
+
+**`scripts/check.js`**
+- Read-only script to inspect current contract state
+- Prints: pause state, round ID, active/drawRequested/drawn flags, end time, ticket count, entry fee, round duration, rollover pool
+
+**`scripts/checktime.js`**
+- Prints raw `endTime` unix timestamp vs current system time
+- Shows exact diff in seconds and whether the round is expired on-chain
+- Used to debug "Round expired" reverts on `buyTicket`
+
+**`scripts/blocktime.js`**
+- Compares Sepolia `block.timestamp` against local system clock
+- Used to confirm timestamps are in sync and rule out clock skew as a cause of issues
+
+---
+
+### Bugs Found & Fixed
+
+**Bug: `unpause.js` reverted on `startRound()`**
+- Cause: a round was already active when `unpauseGame()` was called, so `startRound()` hit the `"Current round still active"` revert
+- Fix: added a check — only call `startRound()` if `!round.active`
+
+**Bug: Frontend always showed "Draw pending..." for TIME LEFT**
+- Cause: `round.endTime` is a BigInt from ethers. `Number(bigInt)` silently loses precision on large values, making `diff` come out negative
+- Fix: changed `Number(round.endTime)` to `Number(round.endTime.toString())` in the countdown `useEffect`
+
+**Bug: `buyTicket` reverted with "Round expired" on frontend**
+- Cause: round 1867 had an `endTime` already in the past — it was started under Lottery1/Lottery2 with a misconfigured `roundDuration` that resulted in an end time that had since passed
+- Fix: ran `rollround.js` to manually trigger `performUpkeep`, rolling the expired round forward and starting a fresh round with the correct 5-minute duration
+
+**Bug: TIME LEFT countdown still showed while game was paused**
+- Cause: pausing the game does not change `round.endTime` on-chain — the frontend timer kept counting regardless
+- Fix: updated TIME LEFT `StatBox` to show `"—"` when `paused === true` instead of the countdown
+
+---
+
+### Why VRF Was Draining LINK With No Active Players
+
+Lottery1 and Lottery2 had no pause mechanism — `_startNewRound()` was called automatically at the end of every round, chaining rounds non-stop. With 1867 rounds accumulated, Chainlink Automation was calling `performUpkeep` every 5 minutes (or whatever the duration was) even with 0 players, burning LINK on every call.
+
+Lottery3's pause logic solves this — when paused, `checkUpkeep` returns `false` so Automation stops polling entirely. The recommended flow going forward:
+
+```
+pause → setduration (if needed) → unpause → players enter → round settles → pause again
+```
+
+This keeps LINK usage minimal and gives full control over when rounds run.
+
+---
+
+### Owner Control Scripts Summary
+
+| Script | Command | What it does |
+|---|---|---|
+| `pause.js` | `npx hardhat run scripts/pause.js --network sepolia` | Pauses the game |
+| `unpause.js` | `npx hardhat run scripts/unpause.js --network sepolia` | Unpauses and starts a round if none active |
+| `setduration.js` | `npx hardhat run scripts/setduration.js --network sepolia` | Changes round duration |
+| `rollround.js` | `npx hardhat run scripts/rollround.js --network sepolia` | Manually triggers performUpkeep on expired round |
+| `check.js` | `npx hardhat run scripts/check.js --network sepolia` | Reads current contract state |

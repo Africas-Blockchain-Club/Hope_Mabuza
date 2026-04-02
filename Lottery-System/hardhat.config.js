@@ -14,11 +14,14 @@ module.exports = {
     hardhat: {},
 
     sepolia: {
-      url: process.env.SEPOLIA_RPC_URL || "",
-      accounts: process.env.DEPLOYER_PRIVATE_KEY
-        ? [process.env.DEPLOYER_PRIVATE_KEY, process.env.PLAYER1_PRIVATE_KEY, process.env.PLAYER2_PRIVATE_KEY ]
-        : [],
-    },
+  url: process.env.SEPOLIA_RPC_URL || "",
+  accounts: [
+    process.env.DEPLOYER_PRIVATE_KEY,
+    process.env.PLAYER1_PRIVATE_KEY,
+    process.env.PLAYER2_PRIVATE_KEY,
+  ].filter(Boolean),
+},
+
   },
 
   solidity: {

@@ -1,26 +1,29 @@
 require("dotenv").config();
 const { ethers } = require("hardhat");
 
+// Reads and prints the current contract state — round info, pause status, fees, rollover pool
 async function main() {
-  const contract = await ethers.getContractAt("Lottery1", process.env.PROXY_ADDRESS);
-
-  console.log("currentRoundId :", (await contract.currentRoundId()).toString());
-  console.log("rolloverPool   :", (await contract.rolloverPool()).toString());
-  console.log("roundDuration  :", (await contract.roundDuration()).toString());
-
-  const round0 = await contract.rounds(0);
-  console.log("rounds[0].active:", round0.active);
-
-  console.log("\nCalling startRound with explicit gas...");
-  const tx = await contract.startRound({ gasLimit: 300000 });
-  await tx.wait();
-  console.log("✅ Round started!");
+  const proxyAddress = process.env.PROXY_ADDRESS;
+  const contract = await ethers.getContractAt("Lottery3", proxyAddress);
 
   const roundId = await contract.currentRoundId();
   const round = await contract.rounds(roundId);
-  console.log("Round ID  :", roundId.toString());
-  console.log("Active    :", round.active);
-  console.log("End Time  :", new Date(Number(round.endTime) * 1000).toLocaleString());
+  const ticketCount = await contract.getRoundTicketCount(roundId);
+
+  console.log("--- Contract State ---");
+  console.log("Game Paused      :", await contract.paused());
+  console.log("Current Round ID :", roundId.toString());
+  console.log("Round Active     :", round.active);
+  console.log("Draw Requested   :", round.drawRequested);
+  console.log("Round Drawn      :", round.drawn);
+  console.log("Round End Time   :", new Date(Number(round.endTime) * 1000).toLocaleString());
+  console.log("Tickets in Round :", ticketCount.toString());
+  console.log("Entry Fee        :", ethers.formatEther(await contract.entryFee()), "ETH");
+  console.log("Round Duration   :", (await contract.roundDuration()).toString(), "seconds");
+  console.log("Rollover Pool    :", ethers.formatEther(await contract.rolloverPool()), "ETH");
 }
 
-main().catch(console.error);
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

@@ -9,7 +9,7 @@ import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Ini
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-contract Lottery2 is
+contract Lottery3 is
     Initializable,
     OwnableUpgradeable,
     UUPSUpgradeable,
@@ -75,6 +75,10 @@ contract Lottery2 is
     // new in Lottery2
     mapping(uint256 => mapping(address => bool)) public hasEntered;
 
+    // --- new in Lottery3 ---
+    // Pause flag. bool packs into one slot; __gap reduced by 1 to compensate.
+    bool public paused;
+
     event RequestSent(uint256 requestId, uint32 numWords);
     event RequestFulfilled(uint256 requestId, uint256[] randomWords);
     event WinningNumbersGenerated(uint256 requestId, uint256 roundId, uint8[7] winningNumbers);
@@ -87,9 +91,12 @@ contract Lottery2 is
     event RewardAssigned(uint256 indexed roundId, address indexed player, uint256 ticketIndex, uint8 matches, uint256 reward);
     event RewardWithdrawn(address indexed player, uint256 amount);
     event OwnerFeesWithdrawn(address indexed owner, uint256 amount);
+    // Emitted when owner pauses or unpauses the game
+    event GamePaused(address indexed by);
+    event GameUnpaused(address indexed by);
 
-    // IMPORTANT: Recalculate this gap before upgrading to Lottery3
-    uint256[38] private __gap;
+    // Reduced from [38] to [37]: `paused` bool occupies one new storage slot
+    uint256[37] private __gap;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -97,11 +104,40 @@ contract Lottery2 is
     }
 
     /// @custom:oz-upgrades-validate-as-initializer
-    function initialize3() public reinitializer(3) {
+    function initialize4() public reinitializer(4) {
+        // No need to re-init ownership, already set in previous versions.
         __Ownable_init_unchained();
+        // Game starts unpaused; owner must explicitly pause if needed
+        paused = false;
     }
 
-    function buyTicket(uint8[7] calldata numbers) external payable {
+
+    // Reverts any state-changing call while the game is paused.
+    // rawFulfillRandomWords is intentionally NOT gated by this modifier
+    // so that in-flight VRF responses can still land and settle funds safely.
+    modifier whenNotPaused() {
+        require(!paused, "Game is paused");
+        _;
+    }
+
+    // Pauses the game: blocks ticket purchases, automation upkeep, and manual
+    // round starts. Only callable by the owner.
+    function pauseGame() external onlyOwner {
+        require(!paused, "Already paused");
+        paused = true;
+        emit GamePaused(msg.sender);
+    }
+
+    // Unpauses the game and restores normal operation.
+    // If no round is active after unpausing, call startRound() manually.
+    function unpauseGame() external onlyOwner {
+        require(paused, "Not paused");
+        paused = false;
+        emit GameUnpaused(msg.sender);
+    }
+
+    // Blocked while paused so no tickets can be sold during a pause
+    function buyTicket(uint8[7] calldata numbers) external payable whenNotPaused {
         require(msg.value == entryFee, "Incorrect entry fee");
         _validateTicketNumbers(numbers);
 
@@ -140,7 +176,9 @@ contract Lottery2 is
     {
         RoundInfo storage round = rounds[currentRoundId];
 
+        // Return false when paused so Chainlink Automation stops triggering upkeep
         upkeepNeeded =
+            !paused &&
             round.active &&
             !round.drawRequested &&
             block.timestamp >= round.endTime;
@@ -148,7 +186,8 @@ contract Lottery2 is
         performData = abi.encode(currentRoundId);
     }
 
-    function performUpkeep(bytes calldata performData) external override {
+    // Second safety layer on top of checkUpkeep: rejects upkeep calls while paused
+    function performUpkeep(bytes calldata performData) external override whenNotPaused {
         uint256 roundIdFromCheck = abi.decode(performData, (uint256));
 
         RoundInfo storage round = rounds[currentRoundId];
@@ -321,7 +360,8 @@ contract Lottery2 is
         emit OwnerFeesWithdrawn(owner(), amount);
     }
 
-    function startRound() external onlyOwner {
+    // Blocked while paused so the owner cannot start a round in a paused state
+    function startRound() external onlyOwner whenNotPaused {
         _startNewRound();
     }
 
