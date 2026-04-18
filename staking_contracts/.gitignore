@@ -1,5 +1,6 @@
 .env
 cache
 coverage
-node_module
+node_modules
 coverage.json
+artifacts
