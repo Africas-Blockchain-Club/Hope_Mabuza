@@ -1,111 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --night: #04020f;
+  --deep: #0a0420;
+  --rose: #e8417a;
+  --rose-glow: #ff6ba8;
+  --lily: #7effd4;
+  --lily-glow: #00ffcc;
+  --gold: #ffd700;
+  --gold-glow: #ffe55c;
+  --violet: #9b5de5;
+  --violet-light: #c77dff;
+  --font-display: 'Cinzel Decorative', serif;
+  --font-body: 'Cormorant Garamond', serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
+html { scroll-behavior: smooth; }
 
 body {
-  margin: 0;
+  background: var(--night);
+  color: #e8d5f5;
+  font-family: var(--font-body);
+  font-size: 18px;
+  overflow-x: hidden;
+  cursor: crosshair;
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--deep); }
+::-webkit-scrollbar-thumb { background: var(--violet); border-radius: 3px; }
+
+/* Neon button base — shared by all mint buttons */
+.btn-neon {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 14px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-neon:hover { transform: translateY(-2px); }
+.btn-neon:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.btn-rose {
+  background: linear-gradient(135deg, #8b1a4a, #c73070);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(232,65,122,0.5), inset 0 0 20px rgba(255,107,168,0.1);
+}
+.btn-rose:hover:not(:disabled) {
+  box-shadow: 0 0 40px rgba(232,65,122,0.8), 0 0 80px rgba(232,65,122,0.3);
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+.btn-lily {
+  background: linear-gradient(135deg, #006644, #00a878);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(0,255,204,0.4), inset 0 0 20px rgba(126,255,212,0.1);
+}
+.btn-lily:hover:not(:disabled) {
+  box-shadow: 0 0 40px rgba(0,255,204,0.7), 0 0 80px rgba(0,255,204,0.3);
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+.btn-gold {
+  background: linear-gradient(135deg, #7a5c00, #c49a00);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(255,215,0,0.4), inset 0 0 20px rgba(255,229,92,0.1);
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+.btn-gold:hover:not(:disabled) {
+  box-shadow: 0 0 40px rgba(255,215,0,0.7), 0 0 80px rgba(255,215,0,0.3);
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
+/* Card used throughout the app */
+.card-mystical {
+  background: linear-gradient(135deg, rgba(10,4,32,0.9), rgba(20,8,50,0.9));
+  border: 1px solid rgba(155,93,229,0.3);
   border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 40px rgba(155,93,229,0.1), inset 0 0 40px rgba(126,255,212,0.03);
 }

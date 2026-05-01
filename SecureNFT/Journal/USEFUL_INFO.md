@@ -1,0 +1,3 @@
+ROSE_URI="ipfs://bafybeib44wweldczfufhw3s2zidxrx2xhzin4q45hufiw5anzi674ti2xq/0.json"
+LILY_URI="ipfs://bafybeib44wweldczfufhw3s2zidxrx2xhzin4q45hufiw5anzi674ti2xq/1.json"
+PROXY_ADDRESS=0xdf15baeDd6ECbcFE81710a818b22AF3154177ed1

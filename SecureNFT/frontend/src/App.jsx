@@ -1,62 +1,48 @@
-import { useState, useCallback } from "react";
-import { useContract } from "./useContract";
-import { useNFTGate } from "./useNFTGate";
-import MintPanel from "./MintPanel";
+import { useContract } from "./hooks/useContract";
+import { useAccess } from "./hooks/useAccess";
+import ParticleField from "./components/ParticleField";
+import GatePage from "./pages/GatePage";
+import HomePage from "./pages/HomePage";
 
-const ROSE = 0n;
-const LILY = 1n;
+function App() {
+  // Blockchain connection — called once, shared everywhere
+  const { contract, account, isConnected, error, connectWallet } = useContract();
 
-export default function App() {
-  const { account, contract, error, connecting, connect } = useContract();
-  const { hasAccess, checkAccess } = useNFTGate(account);
-  const [balances, setBalances] = useState(null);
-
-  const fetchBalances = useCallback(async () => {
-    if (!contract || !account) return;
-    const [rose, lily, roseSupply, lilySupply] = await Promise.all([
-      contract.balanceOf(account, ROSE),
-      contract.balanceOf(account, LILY),
-      contract.totalSupply(ROSE),
-      contract.totalSupply(LILY),
-    ]);
-    setBalances({ rose: rose.toString(), lily: lily.toString(), roseSupply: roseSupply.toString(), lilySupply: lilySupply.toString() });
-  }, [contract, account]);
+  // Server access check — called once, controls which page shows
+  const { isAuthorized, isChecking, accessMessage, accessError, checkAccess } = useAccess();
 
   return (
-    <div>
-      <h1>🌺 My Flowers NFT</h1>
+    <>
+      {/* Sparkles always visible — on both gate and garden */}
+      <ParticleField />
 
-      {!account ? (
-        <button onClick={connect} disabled={connecting}>
-            {connecting ? "Connecting..." : "Connect Wallet"}
-          </button>
-      ) : (
-        <p>Connected: {account}</p>
+      {/* THE GATE — if not authorized, show GatePage */}
+      {!isAuthorized && (
+        <GatePage
+          account={account}
+          isConnected={isConnected}
+          error={error}
+          connectWallet={connectWallet}
+          isAuthorized={isAuthorized}
+          isChecking={isChecking}
+          accessMessage={accessMessage}
+          accessError={accessError}
+          checkAccess={checkAccess}
+        />
       )}
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      {account && (
-        <>
-          {hasAccess === null && <button onClick={checkAccess}>Check Access</button>}
-          {hasAccess === false && <p style={{ color: "red" }}>❌ Access denied. You don't own any NFTs.</p>}
-          {hasAccess === true && (
-            <>
-              <button onClick={fetchBalances}>Refresh Balances</button>
-              {balances && (
-                <table>
-                  <thead><tr><th>Token</th><th>Your Balance</th><th>Total Supply</th></tr></thead>
-                  <tbody>
-                    <tr><td>🌹 ROSE</td><td>{balances.rose}</td><td>{balances.roseSupply} / 1000</td></tr>
-                    <tr><td>🌸 LILY</td><td>{balances.lily}</td><td>{balances.lilySupply} / 1000</td></tr>
-                  </tbody>
-                </table>
-              )}
-              <MintPanel contract={contract} onMinted={fetchBalances} />
-            </>
-          )}
-        </>
+      {/* THE GARDEN — only shown after server confirms Rose ownership */}
+      {isAuthorized && (
+        <HomePage
+          contract={contract}
+          account={account}
+          isConnected={isConnected}
+          error={error}
+          connectWallet={connectWallet}
+        />
       )}
-    </div>
+    </>
   );
 }
+
+export default App;

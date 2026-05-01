@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(cors({ origin: 'http://localhost:5173' }));
 // 1. Connection to the Blockchain
 const provider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
-const contractAddress = '0x564A2d245F04b1dBA5B65FCe48920368B4f3C51B';
+const contractAddress = '0xdf15baeDd6ECbcFE81710a818b22AF3154177ed1';
 const abi = [ "function balanceOf(address account, uint256 id) view returns (uint256)" ];
 const nftContract = new ethers.Contract(contractAddress, abi, provider);
 
@@ -18,12 +18,11 @@ app.post('/verify-nft', async (req, res) => {
 
   try {
     // 2. Query the Smart Contract directly from the Server
-    const [rose, lily] = await Promise.all([
-        nftContract.balanceOf(walletAddress, 0),
-        nftContract.balanceOf(walletAddress, 1),
+    const [rose] = await Promise.all([
+        nftContract.balanceOf(walletAddress, 0)
     ]);
 
-    if (rose > 0n || lily > 0n) {
+    if (rose > 0n) {
       // 3. Logic for "User owns the NFT"
       res.json({ authorized: true, message: "Access Granted" });
     } else {
