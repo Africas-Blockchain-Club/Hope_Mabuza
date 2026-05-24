@@ -93,10 +93,10 @@ An ERC721 NFT whose metadata and image change dynamically based on exploration a
 **Run locally:**
 ```bash
 # Deploy
-npx hardhat run scripts/deploy.js --network sepolia
+cd DynamicNFT/DynamicNFT && npx hardhat run scripts/deploy.js --network sepolia
 
 # Frontend
-cd DynamicNFT/frontend && npm install && npm run dev   # port 5173
+cd DynamicNFT/DynamicNFT/frontend && npm install && npm run dev   # port 5173
 ```
 
 ---
@@ -115,13 +115,13 @@ A three-contract system: an **ERC721 NFT**, an **ERC20 reward token (WTC)**, and
 **Run locally:**
 ```bash
 # Test
-npx hardhat test test/NFT_staking.test.js
+cd NFT_Staking && npx hardhat test test/nft.test.js
 
 # Deploy
-npx hardhat run scripts/deploy.js --network sepolia
+cd NFT_Staking && npx hardhat run scripts/deploy.js --network sepolia
 
 # Frontend
-cd staking-dapp/frontend && npm install && npm run dev   # port 5173
+cd NFT_Staking/frontend/app && npm install && npm run dev   # port 5173
 ```
 
 ---
@@ -143,7 +143,7 @@ npx hardhat run scripts/deploy.js --network sepolia
 
 ## Environment Setup
 
-Each project reads secrets from a `.env` file in its root. The general pattern:
+Each project requires a `.env` file in its root (not committed — listed in `.gitignore`). Create one before deploying:
 
 ```env
 SEPOLIA_RPC_URL=<your Alchemy or Infura endpoint>
@@ -157,8 +157,6 @@ Frontend projects also need a `.env` in their `frontend/` folder:
 VITE_CONTRACT_ADDRESS=<deployed contract address>
 VITE_RPC_URL=<sepolia endpoint>
 ```
-
-> Never commit `.env` files. They are in `.gitignore`.
 
 ---
 
