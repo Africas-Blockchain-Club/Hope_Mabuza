@@ -1,1 +1,1 @@
-how to add projects here :  `rsync -av --exclude='.git' ~/ABC/DynamicNFT ~/ABC/Hope_Mabuza/DynamicNFT`
+how to add projects here :  `rsync -av --exclude='.git' ~/Personal/NFT_Staking ~/ABC/Hope_Mabuza/NFT_Staking`

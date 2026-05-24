@@ -1,0 +1,93 @@
+.page {
+  position: relative; z-index: 1;
+  max-width: 960px; margin: 0 auto;
+  padding: 110px 28px 80px;
+}
+
+.pageTitle { font-size: 36px; font-weight: 900; letter-spacing: -1px; margin-bottom: 10px; }
+.pageSub   { font-size: 15px; color: #6B6FA8; max-width: 560px; line-height: 1.7; margin-bottom: 40px; }
+.pageSub strong { color: #C084FC; }
+
+.cards {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px; margin-bottom: 36px;
+}
+
+.card {
+  background: rgba(15,12,40,0.75);
+  border: 1px solid var(--card-border, rgba(255,255,255,0.1));
+  border-radius: 22px; overflow: hidden;
+  cursor: pointer; transition: box-shadow 0.3s, border-color 0.2s;
+  position: relative;
+  transform-style: preserve-3d;
+}
+.card:hover {
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px var(--card-border, rgba(168,85,247,0.4));
+}
+.card.selected {
+  border-color: var(--card-color, #A855F7);
+  box-shadow: 0 0 40px rgba(168,85,247,0.2), 0 24px 64px rgba(0,0,0,0.5);
+}
+
+.checkmark {
+  position: absolute; top: 12px; right: 12px; z-index: 2;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: linear-gradient(135deg, #7C3AED, #DB2777);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: white; font-weight: 700;
+}
+
+.artWrap {
+  width: 100%; aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+}
+.art { font-size: 80px; }
+
+.cardBody { padding: 20px; }
+
+.topRow {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 10px;
+}
+.nftName { font-size: 18px; font-weight: 800; }
+
+.rarityBadge {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 100px; border: 1px solid;
+}
+
+.nftDesc { font-size: 13px; color: #6B6FA8; line-height: 1.6; margin-bottom: 16px; }
+
+.meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.metaItem { background: rgba(0,0,0,0.45); border-radius: 10px; padding: 10px 12px; }
+.metaVal   { font-family: 'Space Mono', monospace; font-size: 18px; font-weight: 700; margin-bottom: 2px; color: #EEE9FF; }
+.metaLbl   { font-size: 10px; color: #6B6FA8; text-transform: uppercase; letter-spacing: 1px; }
+
+.footer { text-align: center; }
+.notice { font-size: 13px; color: #6B6FA8; margin-bottom: 16px; }
+.error  { font-size: 13px; color: #F87171; margin-bottom: 12px; }
+
+.mintBtn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-width: 280px; padding: 18px 48px; border-radius: 14px;
+  background: linear-gradient(135deg, #7C3AED, #DB2777);
+  color: white; font-size: 17px; font-weight: 700;
+  border: none; cursor: pointer;
+  box-shadow: 0 0 40px rgba(124,58,237,0.4);
+  transition: all 0.2s; margin-bottom: 16px;
+}
+.mintBtn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 0 60px rgba(124,58,237,0.6); }
+.mintBtn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.spinner {
+  display: inline-block; width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3); border-top-color: white;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.hint { font-size: 12px; color: #6B6FA8; }
+
+@media (max-width: 680px) {
+  .cards { grid-template-columns: 1fr; }
+}

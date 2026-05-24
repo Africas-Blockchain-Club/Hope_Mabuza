@@ -1,6 +1,0 @@
-.env
-cache
-coverage
-node_modules
-coverage.json
-artifacts

@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0c0c0e;
+  color: #e8e8e8;
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .font-display {
+  font-family: 'Syne', sans-serif;
+}
+
+button, a, input { font-family: inherit; }
+
+/* ── Cards / panels ── */
+.card {
+  background: #17171a;
+  border: 1px solid #2a2a30;
+  border-radius: 16px;
+}
+
+.card-hover {
+  background: #17171a;
+  border: 1px solid #2a2a30;
+  border-radius: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+.card-hover:hover {
+  border-color: #3a3a44;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+/* ── Scan shimmer on buttons ── */
+.btn-scan {
+  position: relative;
+  overflow: hidden;
+}
+.btn-scan::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 55%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  animation: scan 2.8s linear infinite;
+}
+@keyframes scan { 0% { left: -100%; } 100% { left: 250%; } }
+
+/* ── Gradient text ── */
+.grad-text {
+  background: linear-gradient(90deg, #d3bbff, #2fd9f4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Twinkle ── */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.12; }
+  50%       { opacity: 0.75; }
+}
+
+/* ── Material Symbols ── */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  user-select: none;
+  line-height: 1;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #0c0c0e; }
+::-webkit-scrollbar-thumb { background: #2a2a30; border-radius: 3px; }

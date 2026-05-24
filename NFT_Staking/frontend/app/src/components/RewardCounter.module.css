@@ -1,0 +1,59 @@
+.wrap {
+  background: linear-gradient(135deg, rgba(30,15,70,0.92), rgba(10,20,50,0.92));
+  border: 1px solid rgba(168,85,247,0.3);
+  border-radius: 20px;
+  padding: 28px 32px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.wrap::before {
+  content: '';
+  position: absolute; top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(168,85,247,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.topRow {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.label {
+  font-size: 12px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; color: #6B6FA8; margin-bottom: 8px;
+}
+
+.amount { display: flex; align-items: baseline; gap: 4px; }
+
+.val {
+  font-family: 'Space Mono', monospace;
+  font-size: 48px; font-weight: 700; line-height: 1;
+  background: linear-gradient(90deg, #C084FC, #67E8F9);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+.unit { font-size: 20px; font-weight: 600; color: #6B6FA8; }
+
+.liveBadge {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(74,222,128,0.08);
+  border: 1px solid rgba(74,222,128,0.2);
+  border-radius: 100px; padding: 5px 12px;
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #4ADE80;
+}
+.liveDot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #4ADE80; box-shadow: 0 0 8px #4ADE80;
+  animation: blink 1.5s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
+
+.balRow {
+  display: flex; justify-content: space-between;
+  padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 13px;
+}
+.balLabel { color: #6B6FA8; }
+.balVal   { font-weight: 700; color: #EEE9FF; }

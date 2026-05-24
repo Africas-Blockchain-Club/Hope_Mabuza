@@ -1,0 +1,67 @@
+.page {
+  position: relative; z-index: 1;
+  max-width: 760px; margin: 0 auto;
+  padding: 110px 28px 80px;
+}
+
+.pageTitle { font-size: 36px; font-weight: 900; letter-spacing: -1px; margin-bottom: 10px; }
+.pageSub   { font-size: 15px; color: #6B6FA8; line-height: 1.7; margin-bottom: 32px; }
+.pageSub strong { color: #C084FC; }
+
+.sectionLabel {
+  font-size: 11px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: #6B6FA8; margin-bottom: 12px;
+}
+
+.stakedSection { margin-bottom: 28px; }
+
+.nftList { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+
+.nftRow {
+  display: flex; align-items: center; gap: 16px;
+  background: rgba(15,12,40,0.80); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 16px; padding: 18px 22px;
+  cursor: pointer; transition: all 0.2s;
+}
+.nftRow:hover   { border-color: rgba(168,85,247,0.35); }
+.nftRow.selected {
+  border-color: rgba(168,85,247,0.65);
+  background: rgba(168,85,247,0.06);
+  box-shadow: 0 0 24px rgba(168,85,247,0.12);
+}
+.stakedRow { cursor: default; border-color: rgba(168,85,247,0.2); }
+
+.rowArt  { font-size: 34px; flex-shrink: 0; }
+.rowInfo { flex: 1; }
+.rowName { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+.rowSub  { font-size: 12px; color: #6B6FA8; }
+.rowApy  { font-family: 'Space Mono', monospace; font-size: 20px; font-weight: 700; color: #C084FC; }
+
+.stakedBadge {
+  font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  padding: 4px 12px; border-radius: 100px; text-transform: uppercase;
+  background: rgba(168,85,247,0.12); color: #C084FC;
+  border: 1px solid rgba(168,85,247,0.28);
+}
+
+.notice { font-size: 14px; color: #6B6FA8; padding: 24px 0; }
+.error  { font-size: 13px; color: #F87171; margin-bottom: 12px; }
+
+.actionBtn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 18px; border-radius: 14px;
+  background: linear-gradient(135deg, #7C3AED, #DB2777);
+  color: white; font-size: 17px; font-weight: 700;
+  border: none; cursor: pointer;
+  box-shadow: 0 0 36px rgba(124,58,237,0.35);
+  transition: all 0.2s;
+}
+.actionBtn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 0 56px rgba(124,58,237,0.55); }
+.actionBtn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.spinner {
+  display: inline-block; width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3); border-top-color: white;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
